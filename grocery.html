@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kashim/Noim App</title>
+    <style>
+        /* General styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        /* Header styles */
+        .header {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px; /* Reduced padding */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed; /* Make the header fixed */
+            width: 90%; /* Ensure it spans across the entire width */
+            top: 0;
+            z-index: 1000; /* Ensure it's above other elements */
+        }
+
+        .header img {
+            height: 40px; /* Adjust the height of the icon */
+            margin-right: 10px; /* Added margin to separate from search bar */
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background-color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .search-bar input {
+            border: none;
+            padding: 8px;
+            font-size: 16px;
+            width: 150px;
+        }
+
+        .search-bar button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 10px; /* Adjusted padding for button */
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 5px; /* Reduced margin for button */
+        }
+
+        .search-bar input:focus {
+            outline: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 80px auto 20px auto; /* Adjust margin to account for fixed header */
+            padding: 20px;
+        }
+
+        /* Grid layout for products */
+        .grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: space-between;
+        }
+
+        .product-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            width: 23%; /* Default: 4 items per row on desktops */
+        }
+
+        .product-card img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .product-description, .product-price {
+            margin: 10px 0;
+            color: #333;
+        }
+
+        .details {
+            display: none;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .details img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .details-description, .details-price {
+            margin: 20px 0;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .back-button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Linear progress bar styles */
+        .progress-container {
+            display: none; /* Hidden by default */
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #f4f4f4; /* Background color of the progress bar */
+            padding: 10px;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+            z-index: 1000; /* Ensure it's above other elements */
+        }
+
+        .progress-bar {
+            width: 0; /* Start with 0 width */
+            height: 10px;
+            background-color: #007bff; /* Progress color */
+            transition: width 0.4s ease; /* Smooth transition */
+        }
+
+        /* Responsive design */
+        @media (max-width: 1200px) {
+            .product-card {
+                width: 30%; /* 3 items per row on tablets */
+            }
+        }
+
+        @media (max-width: 768px) and (min-width: 200px) {
+            .product-card {
+                width: 37.5%; /* 2 items per row on mobile devices */
+            }
+        }
+
+        @media (max-width: 600px) {
+            .details-description, .details-price {
+                font-size: 16px; /* Smaller text for mobile */
+            }
+
+            .back-button {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header with Search Bar -->
+<div class="header">
+    <img src="https://cdn-icons-png.flaticon.com/512/7662/7662260.png" alt="App Icon"> <!-- Replace this URL with your actual icon URL -->
+    <div class="search-bar">
+        <input type="text" placeholder="Search..." id="searchInput">
+        <button onclick="searchProducts()">Search</button> <!-- Ensure button is shown -->
+    </div>
+</div>
+
+<div class="container">
+    <!-- Product grid view -->
+    <div class="grid" id="productGrid">
+        <!-- Product cards will be dynamically inserted here -->
+    </div>
+
+    <!-- Product details view -->
+    <div class="details" id="productDetails">
+        <img id="detailsImage" src="" alt="Product Image">
+        <p class="details-description" id="detailsDescription"></p>
+        <p class="details-price" id="detailsPrice"></p>
+        <button class="back-button" onclick="showGrid()">Back to Products</button>
+    </div>
+</div>
+
+<!-- Linear Progress Indicator -->
+<div class="progress-container" id="progressContainer">
+    <div class="progress-bar" id="progressBar"></div>
+</div>
+
+<script>
+    // Product data
+    const products = [
+        { description: "আলু 1kg", price: 35, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRe8McTOpzKfhx8ND2I5R2COPT0ooNVWLAxl9KeFMtOiMSuR6udUJj_hzY&s=10" },
+        { description: "টমাটো 1kg", price: 60, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7xeOGD5KDrhP0zyda34SjLX8_jHhansvX0vKHciT8bIKibPy4kbrmuNie&s=10" },
+        { description: "কলা 4টা", price: 30, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTagIwdeBXo3nqnA3Ai223Hmdsxl8KpA_X8_g&usqp=CAU" },
+        { description: "আধা 1kg", price: 299.99, image: "https://5.imimg.com/data5/FT/RB/MY-40596794/fresh-ginger-500x500.jpg" },
+        { description: "আলু 1kg", price: 35, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRe8McTOpzKfhx8ND2I5R2COPT0ooNVWLAxl9KeFMtOiMSuR6udUJj_hzY&s=10" },
+        { description: "টমাটো 1kg", price: 60, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7xeOGD5KDrhP0zyda34SjLX8_jHhansvX0vKHciT8bIKibPy4kbrmuNie&s=10" },
+        { description: "কলা 4টা", price: 30, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTagIwdeBXo3nqnA3Ai223Hmdsxl8KpA_X8_g&usqp=CAU" },
+        { description: "আধা 1kg", price: 299.99, image: "https://5.imimg.com/data5/FT/RB/MY-40596794/fresh-ginger-500x500.jpg" },
+        { description: "আলু 1kg", price: 35, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRe8McTOpzKfhx8ND2I5R2COPT0ooNVWLAxl9KeFMtOiMSuR6udUJj_hzY&s=10" },
+        { description: "টমাটো 1kg", price: 60, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7xeOGD5KDrhP0zyda34SjLX8_jHhansvX0vKHciT8bIKibPy4kbrmuNie&s=10" },
+        { description: "কলা 4টা", price: 30, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTagIwdeBXo3nqnA3Ai223Hmdsxl8KpA_X8_g&usqp=CAU" },
+        { description: "আধা 1kg", price: 299.99, image: "https://5.imimg.com/data5/FT/RB/MY-40596794/fresh-ginger-500x500.jpg" },
+        { description: "আলু 1kg", price: 35, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRe8McTOpzKfhx8ND2I5R2COPT0ooNVWLAxl9KeFMtOiMSuR6udUJj_hzY&s=10" },
+        { description: "টমাটো 1kg", price: 60, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7xeOGD5KDrhP0zyda34SjLX8_jHhansvX0vKHciT8bIKibPy4kbrmuNie&s=10" },
+        { description: "কলা 4টা", price: 30, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTagIwdeBXo3nqnA3Ai223Hmdsxl8KpA_X8_g&usqp=CAU" },
+        { description: "আধা 1kg", price: 299.99, image: "https://5.imimg.com/data5/FT/RB/MY-40596794/fresh-ginger-500x500.jpg" },
+        { description: "আলু 1kg", price: 35, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRe8McTOpzKfhx8ND2I5R2COPT0ooNVWLAxl9KeFMtOiMSuR6udUJj_hzY&s=10" },
+        { description: "টমাটো 1kg", price: 60, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7xeOGD5KDrhP0zyda34SjLX8_jHhansvX0vKHciT8bIKibPy4kbrmuNie&s=10" },
+        { description: "কলা 4টা", price: 30, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTagIwdeBXo3nqnA3Ai223Hmdsxl8KpA_X8_g&usqp=CAU" },
+        { description: "আধা 1kg", price: 299.99, image: "https://5.imimg.com/data5/FT/RB/MY-40596794/fresh-ginger-500x500.jpg" },
+    ];
+
+    const productGrid = document.getElementById("productGrid");
+    const productDetails = document.getElementById("productDetails");
+    const detailsImage = document.getElementById("detailsImage");
+    const detailsDescription = document.getElementById("detailsDescription");
+    const detailsPrice = document.getElementById("detailsPrice");
+    const progressContainer = document.getElementById("progressContainer");
+    const progressBar = document.getElementById("progressBar");
+
+    let currentIndex = 0; // Track the current index of products being displayed
+    const productsPerLoad = 6; // Number of products to load at a time
+
+    // Function to populate product grid
+    function populateProducts() {
+        const endIndex = Math.min(currentIndex + productsPerLoad, products.length); // Determine end index
+        for (let i = currentIndex; i < endIndex; i++) {
+            const productCard = document.createElement('div');
+            productCard.classList.add('product-card');
+            productCard.innerHTML = `
+                <img src="${products[i].image}" alt="Product Image">
+                <p class="product-description">${products[i].description}</p>
+                <p class="product-price">₹${products[i].price.toFixed(2)}</p>
+            `;
+            productCard.onclick = () => showProductDetails(i);
+            productGrid.appendChild(productCard);
+        }
+        currentIndex = endIndex; // Update current index
+    }
+
+    // Function to show product details
+    function showProductDetails(index) {
+        const product = products[index];
+        detailsImage.src = product.image;
+        detailsDescription.textContent = product.description;
+        detailsPrice.textContent = `₹${product.price.toFixed(2)}`;
+
+        productGrid.style.display = "none";
+        productDetails.style.display = "block";
+    }
+
+    // Function to go back to product grid
+    function showGrid() {
+        productDetails.style.display = "none";
+        productGrid.style.display = "flex";
+    }
+
+    // Function to show loading progress
+    async function showLoadingProgress() {
+        progressContainer.style.display = 'block'; // Show the progress bar
+        let width = 0;
+        return new Promise((resolve) => {
+            const interval = setInterval(() => {
+                width += 25; // Increase width by 25% every second
+                progressBar.style.width = width + '%'; // Update progress bar width
+                if (width >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        progressContainer.style.display = 'none'; // Hide the progress bar after 1 second
+                        resolve();
+                    }, 100);
+                }
+            }, 100); // 1 second interval for loading
+        });
+    }
+
+    // Function to search products
+    async function searchProducts() {
+        const searchQuery = document.getElementById("searchInput").value.toLowerCase();
+        productGrid.innerHTML = '';
+        currentIndex = 0; // Reset current index for search
+
+        const filteredProducts = products.filter(product => 
+            product.description.toLowerCase().includes(searchQuery)
+        );
+
+        // Re-populate grid with filtered products
+        filteredProducts.forEach((product, index) => {
+            const productCard = document.createElement('div');
+            productCard.classList.add('product-card');
+            productCard.innerHTML = `
+                <img src="${product.image}" alt="Product Image">
+                <p class="product-description">${product.description}</p>
+                <p class="product-price">$${product.price.toFixed(2)}</p>
+            `;
+            productCard.onclick = () => showProductDetails(index);
+            productGrid.appendChild(productCard);
+        });
+
+        // Show a message if no products match the search query
+        if (filteredProducts.length === 0) {
+            productGrid.innerHTML = '<p>No products found</p>';
+        }
+    }
+
+    // Auto search when the user types in the input
+    document.getElementById("searchInput").addEventListener("input", searchProducts);
+
+    // Initial load of products and set up the scroll event listener
+    populateProducts();
+    window.addEventListener('scroll', handleScroll);
+
+    // Handle scroll event to load more products
+    async function handleScroll() {
+        if (window.innerHeight + window.scrollY >= document.body.offsetHeight && currentIndex < products.length) {
+            await showLoadingProgress(); // Show loading progress
+            populateProducts(); // Load more products when scrolled to bottom
+        }
+    }
+</script>
+
+</body>
+</html>
