@@ -192,6 +192,7 @@
         <img id="detailsImage" src="" alt="Product Image">
         <p class="details-description" id="detailsDescription"></p>
         <p class="details-price" id="detailsPrice"></p>
+        <p class="details-specifications" id="detailsSpecifications"></p>
         <button class="back-button" onclick="showGrid()">Back to Products</button>
     </div>
 </div>
@@ -204,26 +205,99 @@
 <script>
     // Product data
     const products = [
-        { description: "আলু 1kg", price: 35, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRe8McTOpzKfhx8ND2I5R2COPT0ooNVWLAxl9KeFMtOiMSuR6udUJj_hzY&s=10" },
-        { description: "টমাটো 1kg", price: 60, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7xeOGD5KDrhP0zyda34SjLX8_jHhansvX0vKHciT8bIKibPy4kbrmuNie&s=10" },
-        { description: "কলা 4টা", price: 30, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTagIwdeBXo3nqnA3Ai223Hmdsxl8KpA_X8_g&usqp=CAU" },
-        { description: "আধা 1kg", price: 299.99, image: "https://5.imimg.com/data5/FT/RB/MY-40596794/fresh-ginger-500x500.jpg" },
-        { description: "আলু 1kg", price: 35, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRe8McTOpzKfhx8ND2I5R2COPT0ooNVWLAxl9KeFMtOiMSuR6udUJj_hzY&s=10" },
-        { description: "টমাটো 1kg", price: 60, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7xeOGD5KDrhP0zyda34SjLX8_jHhansvX0vKHciT8bIKibPy4kbrmuNie&s=10" },
-        { description: "কলা 4টা", price: 30, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTagIwdeBXo3nqnA3Ai223Hmdsxl8KpA_X8_g&usqp=CAU" },
-        { description: "আধা 1kg", price: 299.99, image: "https://5.imimg.com/data5/FT/RB/MY-40596794/fresh-ginger-500x500.jpg" },
-        { description: "আলু 1kg", price: 35, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRe8McTOpzKfhx8ND2I5R2COPT0ooNVWLAxl9KeFMtOiMSuR6udUJj_hzY&s=10" },
-        { description: "টমাটো 1kg", price: 60, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7xeOGD5KDrhP0zyda34SjLX8_jHhansvX0vKHciT8bIKibPy4kbrmuNie&s=10" },
-        { description: "কলা 4টা", price: 30, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTagIwdeBXo3nqnA3Ai223Hmdsxl8KpA_X8_g&usqp=CAU" },
-        { description: "আধা 1kg", price: 299.99, image: "https://5.imimg.com/data5/FT/RB/MY-40596794/fresh-ginger-500x500.jpg" },
-        { description: "আলু 1kg", price: 35, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRe8McTOpzKfhx8ND2I5R2COPT0ooNVWLAxl9KeFMtOiMSuR6udUJj_hzY&s=10" },
-        { description: "টমাটো 1kg", price: 60, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7xeOGD5KDrhP0zyda34SjLX8_jHhansvX0vKHciT8bIKibPy4kbrmuNie&s=10" },
-        { description: "কলা 4টা", price: 30, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTagIwdeBXo3nqnA3Ai223Hmdsxl8KpA_X8_g&usqp=CAU" },
-        { description: "আধা 1kg", price: 299.99, image: "https://5.imimg.com/data5/FT/RB/MY-40596794/fresh-ginger-500x500.jpg" },
-        { description: "আলু 1kg", price: 35, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRe8McTOpzKfhx8ND2I5R2COPT0ooNVWLAxl9KeFMtOiMSuR6udUJj_hzY&s=10" },
-        { description: "টমাটো 1kg", price: 60, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7xeOGD5KDrhP0zyda34SjLX8_jHhansvX0vKHciT8bIKibPy4kbrmuNie&s=10" },
-        { description: "কলা 4টা", price: 30, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTagIwdeBXo3nqnA3Ai223Hmdsxl8KpA_X8_g&usqp=CAU" },
-        { description: "আধা 1kg", price: 299.99, image: "https://5.imimg.com/data5/FT/RB/MY-40596794/fresh-ginger-500x500.jpg" },
+        { 
+        description: "আলু 1kg", 
+        price: 35, 
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRe8McTOpzKfhx8ND2I5R2COPT0ooNVWLAxl9KeFMtOiMSuR6udUJj_hzY&s=10",
+          specifications: "alu"
+        },
+        { 
+        description: "টমাটো 1kg", 
+        price: 60, 
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7xeOGD5KDrhP0zyda34SjLX8_jHhansvX0vKHciT8bIKibPy4kbrmuNie&s=10",
+        specifications: "tomato"
+          
+        },
+        {
+        description: "কলা 4টা",
+        price: 30, 
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTagIwdeBXo3nqnA3Ai223Hmdsxl8KpA_X8_g&usqp=CAU",
+        specifications: "kola" },
+        { 
+        description: "আধা 1kg", 
+        price: 299.99, 
+        image: "https://5.imimg.com/data5/FT/RB/MY-40596794/fresh-ginger-500x500.jpg",
+        specifications: "adaa" },
+        {
+          description: "আলু 1kg", 
+        price: 35, 
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRe8McTOpzKfhx8ND2I5R2COPT0ooNVWLAxl9KeFMtOiMSuR6udUJj_hzY&s=10",
+          specifications: "alu"
+        },
+        { 
+        description: "টমাটো 1kg", 
+        price: 60, 
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7xeOGD5KDrhP0zyda34SjLX8_jHhansvX0vKHciT8bIKibPy4kbrmuNie&s=10",
+        specifications: "tomato"
+          
+        },
+        {
+        description: "কলা 4টা",
+        price: 30, 
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTagIwdeBXo3nqnA3Ai223Hmdsxl8KpA_X8_g&usqp=CAU",
+        specifications: "kola" },
+        { 
+        description: "আধা 1kg", 
+        price: 299.99, 
+        image: "https://5.imimg.com/data5/FT/RB/MY-40596794/fresh-ginger-500x500.jpg",
+        specifications: "adaa" },
+        {
+        description: "আলু 1kg", 
+        price: 35, 
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRe8McTOpzKfhx8ND2I5R2COPT0ooNVWLAxl9KeFMtOiMSuR6udUJj_hzY&s=10",
+          specifications: "alu"
+        },
+        { 
+        description: "টমাটো 1kg", 
+        price: 60, 
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7xeOGD5KDrhP0zyda34SjLX8_jHhansvX0vKHciT8bIKibPy4kbrmuNie&s=10",
+        specifications: "tomato"
+          
+        },
+        {
+        description: "কলা 4টা",
+        price: 30, 
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTagIwdeBXo3nqnA3Ai223Hmdsxl8KpA_X8_g&usqp=CAU",
+        specifications: "kola fresh" },
+        { 
+        description: "আধা 1kg", 
+        price: 299.99, 
+        image: "https://5.imimg.com/data5/FT/RB/MY-40596794/fresh-ginger-500x500.jpg",
+        specifications: "adaa" },
+        {
+        description: "আলু 1kg", 
+        price: 35, 
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRe8McTOpzKfhx8ND2I5R2COPT0ooNVWLAxl9KeFMtOiMSuR6udUJj_hzY&s=10",
+          specifications: "alu"
+        },
+        { 
+        description: "টমাটো 1kg", 
+        price: 60, 
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7xeOGD5KDrhP0zyda34SjLX8_jHhansvX0vKHciT8bIKibPy4kbrmuNie&s=10",
+        specifications: "tomato"
+          
+        },
+        {
+        description: "কলা 4টা",
+        price: 30, 
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTagIwdeBXo3nqnA3Ai223Hmdsxl8KpA_X8_g&usqp=CAU",
+        specifications: "kola" },
+        { 
+        description: "আধা 1kg", 
+        price: 299.99, 
+        image: "https://5.imimg.com/data5/FT/RB/MY-40596794/fresh-ginger-500x500.jpg",
+        specifications: "adaa" },
+        
     ];
 
     const productGrid = document.getElementById("productGrid");
@@ -233,33 +307,40 @@
     const detailsPrice = document.getElementById("detailsPrice");
     const progressContainer = document.getElementById("progressContainer");
     const progressBar = document.getElementById("progressBar");
+    const detailsSpecifications = document.createElement('p');  // New specifications element
+    detailsSpecifications.className = 'details-specifications';
+    productDetails.appendChild(detailsSpecifications);  // Add to product details view
 
     let currentIndex = 0; // Track the current index of products being displayed
     const productsPerLoad = 6; // Number of products to load at a time
 
     // Function to populate product grid
     function populateProducts() {
-        const endIndex = Math.min(currentIndex + productsPerLoad, products.length); // Determine end index
-        for (let i = currentIndex; i < endIndex; i++) {
-            const productCard = document.createElement('div');
-            productCard.classList.add('product-card');
-            productCard.innerHTML = `
-                <img src="${products[i].image}" alt="Product Image">
-                <p class="product-description">${products[i].description}</p>
-                <p class="product-price">₹${products[i].price.toFixed(2)}</p>
-            `;
-            productCard.onclick = () => showProductDetails(i);
-            productGrid.appendChild(productCard);
-        }
-        currentIndex = endIndex; // Update current index
+    const endIndex = Math.min(currentIndex + productsPerLoad, products.length); // Determine end index
+    for (let i = currentIndex; i < endIndex; i++) {
+        const product = products[i]; // Get the product object
+        const productCard = document.createElement('div');
+        productCard.classList.add('product-card');
+        productCard.innerHTML = `
+            <img src="${product.image}" alt="Product Image">
+            <p class="product-description">${product.description}</p>
+            <p class="product-price">₹${product.price.toFixed(2)}</p>
+        `;
+        // Pass the product object to the showProductDetails function
+        productCard.onclick = () => showProductDetails(product);
+        productGrid.appendChild(productCard);
     }
+    currentIndex = endIndex; // Update the current index after loading products
+}
+
 
     // Function to show product details
-    function showProductDetails(index) {
-        const product = products[index];
+    function showProductDetails(product) {
+        
         detailsImage.src = product.image;
         detailsDescription.textContent = product.description;
         detailsPrice.textContent = `₹${product.price.toFixed(2)}`;
+        detailsSpecifications.textContent = `Specifications: ${product.specifications}`; // Display specifications
 
         productGrid.style.display = "none";
         productDetails.style.display = "block";
@@ -297,19 +378,20 @@
         currentIndex = 0; // Reset current index for search
 
         const filteredProducts = products.filter(product => 
-            product.description.toLowerCase().includes(searchQuery)
+            product.description.toLowerCase().includes(searchQuery) ||
+            product.specifications.toLowerCase().includes(searchQuery)
         );
 
         // Re-populate grid with filtered products
-        filteredProducts.forEach((product, index) => {
+        filteredProducts.forEach((product) => {
             const productCard = document.createElement('div');
             productCard.classList.add('product-card');
             productCard.innerHTML = `
                 <img src="${product.image}" alt="Product Image">
                 <p class="product-description">${product.description}</p>
-                <p class="product-price">$${product.price.toFixed(2)}</p>
+                <p class="product-price">₹${product.price.toFixed(2)}</p>
             `;
-            productCard.onclick = () => showProductDetails(index);
+            productCard.onclick = () => showProductDetails(product);
             productGrid.appendChild(productCard);
         });
 
